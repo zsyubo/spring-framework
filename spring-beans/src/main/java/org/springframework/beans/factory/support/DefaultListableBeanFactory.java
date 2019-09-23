@@ -198,11 +198,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 
 	/**
+	 * 指定一个用于序列化目的的ID，以便根据需要将此BeanFactory从该ID反序列化回BeanFactory对象中。
 	 * Specify an id for serialization purposes, allowing this BeanFactory to be
 	 * deserialized from this id back into the BeanFactory object, if needed.
 	 */
 	public void setSerializationId(@Nullable String serializationId) {
 		if (serializationId != null) {
+			// todo 这儿为撒用弱引用？
 			serializableFactories.put(serializationId, new WeakReference<>(this));
 		}
 		else if (this.serializationId != null) {

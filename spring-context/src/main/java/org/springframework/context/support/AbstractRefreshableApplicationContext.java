@@ -29,28 +29,33 @@ import org.springframework.lang.Nullable;
  * Base class for {@link org.springframework.context.ApplicationContext}
  * implementations which are supposed to support multiple calls to {@link #refresh()},
  * creating a new internal bean factory instance every time.
+ * ApplicationContext实现的基类，它应该支持多个refresh()调用，每次创建一个新的内部bean工厂实例。
  * Typically (but not necessarily), such a context will be driven by
  * a set of config locations to load bean definitions from.
- *
+ * 通常(但不一定)，这样的上下文将由一组配置位置驱动，以便从这些配置位置加载bean定义。
  * <p>The only method to be implemented by subclasses is {@link #loadBeanDefinitions},
- * which gets invoked on each refresh. A concrete implementation is supposed to load
- * bean definitions into the given
+ * which gets invoked on each refresh.
+ * 子类要实现的惟一方法是loadbeandefinition，它在每次刷新时调用。
+ * A concrete implementation is supposed to load bean definitions into the given
  * {@link org.springframework.beans.factory.support.DefaultListableBeanFactory},
  * typically delegating to one or more specific bean definition readers.
- *
+ * 具体的实现应该将bean定义加载到给定的DefaultListableBeanFactory中，通常委托给一个或多个特定的bean定义阅读器。
  * <p><b>Note that there is a similar base class for WebApplicationContexts.</b>
+ * 注意，WebApplicationContexts也有一个类似的基类。
  * {@link org.springframework.web.context.support.AbstractRefreshableWebApplicationContext}
  * provides the same subclassing strategy, but additionally pre-implements
- * all context functionality for web environments. There is also a
- * pre-defined way to receive config locations for a web context.
- *
+ * all context functionality for web environments.
+ * org.springframework.web.context.support.Abstractrefremblewebapplicationcontext提供了相同的子类化策略，但还为web环境预先实现了所有上下文功能。
+ * There is also a pre-defined way to receive config locations for a web context.
+ * 还有一种预定义的方法来接收web上下文的配置位置。
  * <p>Concrete standalone subclasses of this base class, reading in a
  * specific bean definition format, are {@link ClassPathXmlApplicationContext}
  * and {@link FileSystemXmlApplicationContext}, which both derive from the
  * common {@link AbstractXmlApplicationContext} base class;
+ * 这个基类的具体独立子类(以特定的bean定义格式读取)是ClassPathXmlApplicationContext和FileSystemXmlApplicationContext，它们都派生自公共AbstractXmlApplicationContext基类;
  * {@link org.springframework.context.annotation.AnnotationConfigApplicationContext}
  * supports {@code @Configuration}-annotated classes as a source of bean definitions.
- *
+ * org.springframework.context.annotation.AnnotationConfigApplicationContext支持@Configuration-annotated类作为bean定义的源
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 1.1.3
@@ -116,19 +121,26 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 
 	/**
+	 * 创建BeanFactory，如果已有BeanFactory则先销毁并清理已有BeanFactory。
 	 * This implementation performs an actual refresh of this context's underlying
 	 * bean factory, shutting down the previous bean factory (if any) and
-	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
+	 * initializing a fresh bean factory for the next phase of tgetBeanFactoryhe context's lifecycle.
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		// 判断是否已存在 BeanFactory
 		if (hasBeanFactory()) {
+			// 销毁
 			destroyBeans();
+			// 清理
 			closeBeanFactory();
 		}
 		try {
+			// 创建IOC容器
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 不太懂为撒这么做
 			beanFactory.setSerializationId(getId());
+			// 对 IOC 容器进行定制化， 如设置启动参数， 开启注解的自动装配等
 			customizeBeanFactory(beanFactory);
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
@@ -222,9 +234,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * @see DefaultListableBeanFactory#setAllowEagerClassLoading
 	 */
 	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
+		// 也就是 如果有相同名称不同定义的Bean，则会用后者替换前者，默认true。
 		if (this.allowBeanDefinitionOverriding != null) {
 			beanFactory.setAllowBeanDefinitionOverriding(this.allowBeanDefinitionOverriding);
 		}
+		// 是否处理循环引用。默认：true 
 		if (this.allowCircularReferences != null) {
 			beanFactory.setAllowCircularReferences(this.allowCircularReferences);
 		}

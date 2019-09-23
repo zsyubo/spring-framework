@@ -52,6 +52,7 @@ import org.springframework.lang.Nullable;
 public interface Resource extends InputStreamSource {
 
 	/**
+	 * 资源是否存在
 	 * Determine whether this resource actually exists in physical form.
 	 * <p>This method performs a definitive existence check, whereas the
 	 * existence of a {@code Resource} handle only guarantees a valid
@@ -60,6 +61,7 @@ public interface Resource extends InputStreamSource {
 	boolean exists();
 
 	/**
+	 * 资源是否可读
 	 * Indicate whether non-empty contents of this resource can be read via
 	 * {@link #getInputStream()}.
 	 * <p>Will be {@code true} for typical resource descriptors that exist
@@ -85,6 +87,7 @@ public interface Resource extends InputStreamSource {
 	}
 
 	/**
+	 * 是否为 File
 	 * Determine whether this resource represents a file in a file system.
 	 * A value of {@code true} strongly suggests (but does not guarantee)
 	 * that a {@link #getFile()} call will succeed.
@@ -97,6 +100,7 @@ public interface Resource extends InputStreamSource {
 	}
 
 	/**
+	 * 返回资源的 URL 的句柄
 	 * Return a URL handle for this resource.
 	 * @throws IOException if the resource cannot be resolved as URL,
 	 * i.e. if the resource is not available as descriptor
@@ -104,6 +108,7 @@ public interface Resource extends InputStreamSource {
 	URL getURL() throws IOException;
 
 	/**
+	 * 返回资源的 URI 的句柄
 	 * Return a URI handle for this resource.
 	 * @throws IOException if the resource cannot be resolved as URI,
 	 * i.e. if the resource is not available as descriptor
@@ -158,6 +163,7 @@ public interface Resource extends InputStreamSource {
 	Resource createRelative(String relativePath) throws IOException;
 
 	/**
+	 * 获取文件名
 	 * Determine a filename for this resource, i.e. typically the last
 	 * part of the path: for example, "myfile.txt".
 	 * <p>Returns {@code null} if this type of resource does not
@@ -167,6 +173,7 @@ public interface Resource extends InputStreamSource {
 	String getFilename();
 
 	/**
+	 * 资源的描述
 	 * Return a description for this resource,
 	 * to be used for error output when working with the resource.
 	 * <p>Implementations are also encouraged to return this value

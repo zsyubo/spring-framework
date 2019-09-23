@@ -83,11 +83,14 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
- * Abstract implementation of the {@link org.springframework.context.ApplicationContext}
- * interface. Doesn't mandate the type of storage used for configuration; simply
- * implements common context functionality. Uses the Template Method design pattern,
- * requiring concrete subclasses to implement abstract methods.
- *
+ * Abstract implementation of the {@link org.springframework.context.ApplicationContext} interface.
+ * ApplicationContext接口的抽象实现。
+ * Doesn't mandate the type of storage used for configuration;
+ *  没有强制要求配置使用的存储类型;
+ * simply implements common context functionality.
+ * 简单地实现公共上下文功能。
+ * Uses the Template Method design pattern, requiring concrete subclasses to implement abstract methods.
+ * 使用模板方法设计模式，需要具体的子类来实现抽象方法。
  * <p>In contrast to a plain BeanFactory, an ApplicationContext is supposed
  * to detect special beans defined in its internal bean factory:
  * Therefore, this class automatically registers
@@ -95,22 +98,24 @@ import org.springframework.util.ReflectionUtils;
  * {@link org.springframework.beans.factory.config.BeanPostProcessor BeanPostProcessors},
  * and {@link org.springframework.context.ApplicationListener ApplicationListeners}
  * which are defined as beans in the context.
- *
+ *  与普通BeanFactory相反，ApplicationContext应该检测在其内部bean工厂中定义的特殊bean(什么特殊Bean):因此，该类自动注册beanfactorypostprocessor、beanpostprocessor和applicationlistener，它们在上下文中定义为bean。
  * <p>A {@link org.springframework.context.MessageSource} may also be supplied
  * as a bean in the context, with the name "messageSource"; otherwise, message
- * resolution is delegated to the parent context. Furthermore, a multicaster
+ * resolution is delegated to the parent context.
+ * MessageSource也可以在上下文中作为bean提供，其名称为“MessageSource”;否则，将消息解析委托给父上下文。
+ * Furthermore, a multicaster
  * for application events can be supplied as an "applicationEventMulticaster" bean
  * of type {@link org.springframework.context.event.ApplicationEventMulticaster}
  * in the context; otherwise, a default multicaster of type
  * {@link org.springframework.context.event.SimpleApplicationEventMulticaster} will be used.
- *
+ * 此外，应用程序事件的多播器可以作为上下文中applicationEventMulticaster类型的“applicationEventMulticaster”bean提供;否则，将使用SimpleApplicationEventMulticaster类型的默认多播程序。
  * <p>Implements resource loading by extending
  * {@link org.springframework.core.io.DefaultResourceLoader}.
  * Consequently treats non-URL resource paths as class path resources
  * (supporting full class path resource names that include the package path,
  * e.g. "mypackage/myresource.dat"), unless the {@link #getResourceByPath}
  * method is overridden in a subclass.
- *
+ *  通过扩展DefaultResourceLoader实现资源加载。因此，将非url资源路径视为类路径资源(支持包含包路径的完整类路径资源名，例如。除非在子类中重写getResourceByPath方法。
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -439,14 +444,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.lifecycleProcessor;
 	}
 
-	/**
+	/**   总的来说就是返回一个资源解析器					  解析      位置      模式
 	 * Return the ResourcePatternResolver to use for resolving location patterns
 	 * into Resource instances. Default is a
 	 * {@link org.springframework.core.io.support.PathMatchingResourcePatternResolver},
 	 * supporting Ant-style location patterns.
+	 * 返回要用于将位置模式解析(这儿翻译总感觉怪怪的)为资源实例的ResourcePatternResolver。
 	 * <p>Can be overridden in subclasses, for extended resolution strategies,
 	 * for example in a web environment.
+	 * 默认是一个PathMatchingResourcePatternResolver，支持ant样式的位置模式。
 	 * <p><b>Do not call this when needing to resolve a location pattern.</b>
+	 * 可以在子类中重写，用于扩展解析策略，例如在web环境中。
 	 * Call the context's {@code getResources} method instead, which
 	 * will delegate to the ResourcePatternResolver.
 	 * @return the ResourcePatternResolver for this context
@@ -511,10 +519,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		return this.applicationListeners;
 	}
 
+	/**
+	 * 模板方法
+	 * 在创建 IOC 容器前， 如果已经有容器存在， 则需要把已有的容器销毁和关闭，
+	 * 以保证在 refresh 之后使用的是新建立起来的 IOC 容器。 refresh 的作用类似于对 IOC 容器的重启，
+	 * 在新建立好的容器中对容器进行初始化， 对 Bean 定义资源进行载
+	 * @throws BeansException
+	 * @throws IllegalStateException
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
+		// 线程安全
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 准备工作
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
@@ -581,11 +599,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * active flag as well as performing any initialization of property sources.
 	 */
 	protected void prepareRefresh() {
-		// Switch to active.
+		// Switch to active.  开始时间
 		this.startupDate = System.currentTimeMillis();
+		// close属性为是否关闭
 		this.closed.set(false);
 		this.active.set(true);
-
+		// 是否是 debug级别的日志
 		if (logger.isDebugEnabled()) {
 			if (logger.isTraceEnabled()) {
 				logger.trace("Refreshing " + this);
@@ -602,7 +621,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// see ConfigurablePropertyResolver#setRequiredProperties
 		getEnvironment().validateRequiredProperties();
 
-		// Store pre-refresh ApplicationListeners...
+		// Store pre-refresh ApplicationListeners...  初始化 earlyApplicationListeners
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
@@ -633,6 +652,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 创建一个BeanFactory，创建过程交由子类实现
 		refreshBeanFactory();
 		return getBeanFactory();
 	}

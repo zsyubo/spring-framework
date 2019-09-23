@@ -26,23 +26,24 @@ import org.springframework.util.Assert;
 /**
  * Standalone XML application context, taking the context definition files
  * from the class path, interpreting plain paths as class path resource names
- * that include the package path (e.g. "mypackage/myresource.txt"). Useful for
- * test harnesses as well as for application contexts embedded within JARs.
- *
+ * that include the package path (e.g. "mypackage/myresource.txt").
+ * 独立的XML应用程序上下文，从类路径中获取上下文定义文件，将普通路径解释为包含包路径的类路径资源名(例如，“mypackage/myresource.txt”)。
+ * Useful for test harnesses as well as for application contexts embedded within JARs.
+ * 适用于测试工具以及嵌入在jar中的应用程序上下文。
  * <p>The config location defaults can be overridden via {@link #getConfigLocations},
  * Config locations can either denote concrete files like "/myfiles/context.xml"
  * or Ant-style patterns like "/myfiles/*-context.xml" (see the
  * {@link org.springframework.util.AntPathMatcher} javadoc for pattern details).
- *
+ * 配置位置的默认值可以通过getConfigLocations重写，配置位置可以表示具体的文件，比如“/myfiles/context.xml“或ant样式的模式，比如”/myfiles/*-context.xml。参见org.springframework.util。模式细节的AntPathMatcher javadoc)。
  * <p>Note: In case of multiple config locations, later bean definitions will
  * override ones defined in earlier loaded files. This can be leveraged to
  * deliberately override certain bean definitions via an extra XML file.
- *
+ *  注意:对于多个配置位置，后面的bean定义将覆盖前面加载的文件中定义的配置位置。可以利用这一点，通过额外的XML文件故意覆盖某些bean定义。
  * <p><b>This is a simple, one-stop shop convenience ApplicationContext.
  * Consider using the {@link GenericApplicationContext} class in combination
  * with an {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}
  * for more flexible context setup.</b>
- *
+ *  这是一个简单的一站式应用程序上下文。考虑将GenericApplicationContext类与org.springframework.bean.factory.xml.XmlBeanDefinitionReader结合使用。用于更灵活的上下文设置
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #getResource
@@ -124,13 +125,14 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
+	 * 使用给定的父类创建一个新的ClassPathXmlApplicationContext，从给定的XML文件中加载定义。
 	 * Create a new ClassPathXmlApplicationContext with the given parent,
 	 * loading the definitions from the given XML files.
-	 * @param configLocations array of resource locations
+	 * @param configLocations array of resource locations  资源位置数组
 	 * @param refresh whether to automatically refresh the context,
-	 * loading all bean definitions and creating all singletons.
+	 * loading all bean definitions and creating all singletons.   是否自动刷新上下文、加载所有bean定义并创建所有单例。或者，在进一步配置上下文之后手动调用refresh。
 	 * Alternatively, call refresh manually after further configuring the context.
-	 * @param parent the parent context
+	 * @param parent the parent context  这父 context
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
 	 */

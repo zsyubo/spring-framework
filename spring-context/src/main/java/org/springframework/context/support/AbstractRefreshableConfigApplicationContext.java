@@ -24,12 +24,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
+ * Abstractrefrembleapplicationcontext子类，用于添加对指定配置位置的公共处理。
  * {@link AbstractRefreshableApplicationContext} subclass that adds common handling
- * of specified config locations. Serves as base class for XML-based application
+ * of specified config locations.
+ * Serves as base class for XML-based application
  * context implementations such as {@link ClassPathXmlApplicationContext} and
  * {@link FileSystemXmlApplicationContext}, as well as
  * {@link org.springframework.web.context.support.XmlWebApplicationContext}.
- *
+ * 作为基于xml的应用程序上下文实现的基类，如ClassPathXmlApplicationContext和FileSystemXmlApplicationContext，以及org.springframework.web.context.context.support.Xmlwebapplicationcontext
  * @author Juergen Hoeller
  * @since 2.5.2
  * @see #setConfigLocation
