@@ -142,6 +142,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			beanFactory.setSerializationId(getId());
 			// 对 IOC 容器进行定制化， 如设置启动参数， 开启注解的自动装配等
 			customizeBeanFactory(beanFactory);
+			// 调用载入 Bean 定义的方法
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;

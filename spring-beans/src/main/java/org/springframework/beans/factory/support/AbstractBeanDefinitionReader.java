@@ -86,10 +86,12 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		this.registry = registry;
 
 		// Determine ResourceLoader to use.
+		// 在XML文件启动时，这儿传入的DefaultListableBeanFactory，所以不是ResourceLoader
 		if (this.registry instanceof ResourceLoader) {
 			this.resourceLoader = (ResourceLoader) this.registry;
 		}
 		else {
+			// 最终走的这行
 			this.resourceLoader = new PathMatchingResourcePatternResolver();
 		}
 
@@ -221,6 +223,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		if (resourceLoader instanceof ResourcePatternResolver) {
 			// Resource pattern matching available.
 			try {
+				// 通过ResourcePatternResolver，将xml 路径转化Resource资源
 				Resource[] resources = ((ResourcePatternResolver) resourceLoader).getResources(location);
 				int count = loadBeanDefinitions(resources);
 				if (actualResources != null) {
@@ -254,6 +257,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 	public int loadBeanDefinitions(String... locations) throws BeanDefinitionStoreException {
 		Assert.notNull(locations, "Location array must not be null");
 		int count = 0;
+		// 多个配置文件循环多次
 		for (String location : locations) {
 			count += loadBeanDefinitions(location);
 		}

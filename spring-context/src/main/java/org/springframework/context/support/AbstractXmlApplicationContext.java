@@ -55,6 +55,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	}
 
 	/**
+	 * 从父parent context创建一个new AbstractXmlApplicationContext
 	 * Create a new AbstractXmlApplicationContext with the given parent context.
 	 * @param parent the parent context
 	 */
@@ -80,12 +81,13 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
-		// 创建xml   Bean读取器
+		// 创建xml   Bean读取器,把创建的BeanFactory载入进去。
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
+		// 因为当前Context实现了ResourceLoader接口，所以可以加载资源。
 		beanDefinitionReader.setResourceLoader(this);
 		//为 Bean 读取器设置 SAX xml 解析器
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));

@@ -139,9 +139,10 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	public ClassPathXmlApplicationContext(
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
-
+		// xml方法，parent=null
 		super(parent);
 		setConfigLocations(configLocations);
+		// refresh 正常初始化传入的都是true
 		if (refresh) {
 			refresh();
 		}
