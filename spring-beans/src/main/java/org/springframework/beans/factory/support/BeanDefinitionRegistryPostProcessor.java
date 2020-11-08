@@ -25,10 +25,11 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
  * BeanFactoryPostProcessor detection kicks in. In particular,
  * BeanDefinitionRegistryPostProcessor may register further bean definitions
  * which in turn define BeanFactoryPostProcessor instances.
+ * 自定义注册Bean
  *
  * @author Juergen Hoeller
- * @since 3.0.1
  * @see org.springframework.context.annotation.ConfigurationClassPostProcessor
+ * @since 3.0.1
  */
 public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProcessor {
 
