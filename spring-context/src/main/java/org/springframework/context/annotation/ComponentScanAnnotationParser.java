@@ -122,6 +122,7 @@ class ComponentScanAnnotationParser {
 			}
 		});
 		// 核心逻辑，加载类
+		// 加载所有的BeanDefinition
 		return scanner.doScan(StringUtils.toStringArray(basePackages));
 	}
 

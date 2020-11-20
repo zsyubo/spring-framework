@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Interface that defines abstract access to the annotations of a specific
  * class, in a form that does not require that class to be loaded yet.
- * 其实就是获取注解的一些信息
+ * 存储着类的元信息，其实就是获取注解的一些信息
  *
  * @author Juergen Hoeller
  * @author Mark Fisher

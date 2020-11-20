@@ -98,6 +98,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	@Nullable
 	private ResourcePatternResolver resourcePatternResolver;
 
+	// spring boot 中是 new CachingMetadataReaderFactory(resourceLoader);
 	@Nullable
 	private MetadataReaderFactory metadataReaderFactory;
 
@@ -266,6 +267,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	private ResourcePatternResolver getResourcePatternResolver() {
+		// 		this.scanner = new ClassPathBeanDefinitionScanner(this);
+		// 在这里面初始化的
 		if (this.resourcePatternResolver == null) {
 			this.resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		}
@@ -300,10 +303,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * @return a corresponding Set of autodetected bean definitions
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
+		// componentsIndex也是在初始化reader时初始化的。
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
+			// 这里的意思大概是：去读取META-INF/spring.component 中配置的component对象，而不用去扫包了。
 			return addCandidateComponentsFromIndex(this.componentsIndex, basePackage);
-		}
-		else {
+		} else {
+			// spring boot 走这
 			return scanCandidateComponents(basePackage);
 		}
 	}
@@ -412,17 +417,21 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			// 将路径转换为resource资源
+			// 里面装了路径下的所有class类
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
 			boolean traceEnabled = logger.isTraceEnabled();
 			boolean debugEnabled = logger.isDebugEnabled();
+			// 遍历每一个class文件，组装为ScannedGenericBeanDefinition
 			for (Resource resource : resources) {
 				if (traceEnabled) {
 					logger.trace("Scanning " + resource);
 				}
+				// 资源是否存在、可读
 				if (resource.isReadable()) {
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 						if (isCandidateComponent(metadataReader)) {
+							// 组装BeanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
@@ -431,8 +440,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 									logger.debug("Identified candidate component class: " + resource);
 								}
 								candidates.add(sbd);
-							}
-							else {
+							} else {
 								if (debugEnabled) {
 									logger.debug("Ignored because not a concrete top-level class: " + resource);
 								}

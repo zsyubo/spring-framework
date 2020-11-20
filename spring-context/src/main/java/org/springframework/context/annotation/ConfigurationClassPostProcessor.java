@@ -313,6 +313,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
 			// 解析器解析配置类
+			// 这里面注册BeanDefinition
 			parser.parse(candidates);
 			parser.validate();
 
@@ -327,18 +328,23 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
-			// 核心就在这个方法，加载了bean, 此时一些配置类已经加载了
+			// configClasses: 只有有Component注解，都会加进去
+			// 通过condition条件判断是否要导入
+			// 这的主要作用是Import、Bean 注解方式导入处理
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
+
 			if (registry.getBeanDefinitionCount() > candidateNames.length) {
+				// 所有加载了bean名
 				String[] newCandidateNames = registry.getBeanDefinitionNames();
 				Set<String> oldCandidateNames = new HashSet<>(Arrays.asList(candidateNames));
 				Set<String> alreadyParsedClasses = new HashSet<>();
 				for (ConfigurationClass configurationClass : alreadyParsed) {
 					alreadyParsedClasses.add(configurationClass.getMetadata().getClassName());
 				}
+				// 有可能刚导入的一个，注解上的又导入另一个
 				for (String candidateName : newCandidateNames) {
 					if (!oldCandidateNames.contains(candidateName)) {
 						BeanDefinition bd = registry.getBeanDefinition(candidateName);
