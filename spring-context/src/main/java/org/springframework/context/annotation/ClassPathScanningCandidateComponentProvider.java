@@ -272,6 +272,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		if (this.resourcePatternResolver == null) {
 			this.resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		}
+		// PathMatchingResourcePatternResolver
 		return this.resourcePatternResolver;
 	}
 
@@ -293,6 +294,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		if (this.metadataReaderFactory == null) {
 			this.metadataReaderFactory = new CachingMetadataReaderFactory();
 		}
+		//Spring boot 中是 CachingMetadataReaderFactory
 		return this.metadataReaderFactory;
 	}
 
@@ -430,11 +432,13 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				if (resource.isReadable()) {
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+						// 判断是否需要加载
 						if (isCandidateComponent(metadataReader)) {
 							// 组装BeanDefinition
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setResource(resource);
 							sbd.setSource(resource);
+							// 确定bean是否符合条件
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
 									logger.debug("Identified candidate component class: " + resource);

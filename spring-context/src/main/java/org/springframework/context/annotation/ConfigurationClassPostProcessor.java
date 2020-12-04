@@ -250,7 +250,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		// 待解析的配置了list
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		// 获取 已经存好的BeanDefinitionNames的名字
+		// 获取 已经存好的BeanDefinitionNames的名字(这是一开始就加载进来的，里面有应用启动类)
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		for (String beanName : candidateNames) {

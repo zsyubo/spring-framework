@@ -273,6 +273,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 			// 这地方就把所有的class文件(带component注解的)加载进来了
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			//注意下，这时候的BeanDefinition 并没有注册到registry
+			// ScannedGenericBeanDefinition
 			for (BeanDefinition candidate : candidates) {
 				// scope的注解元信息
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
