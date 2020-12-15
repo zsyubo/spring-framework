@@ -232,13 +232,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 						}
 					}
 					throw ex;
-				}
-				finally {
+				} finally {
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
 					afterSingletonCreation(beanName);
 				}
+				// 如果是新实列，注册一些信息
 				if (newSingleton) {
 					addSingleton(beanName, singletonObject);
 				}

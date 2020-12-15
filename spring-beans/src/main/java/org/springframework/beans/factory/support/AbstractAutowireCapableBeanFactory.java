@@ -83,7 +83,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Nullable
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
-	/** Whether to automatically try to resolve circular references between beans. */
+	/**
+	 * Whether to automatically try to resolve circular references between beans.
+	 */
+	//	是否自动尝试解决bean之间的循环引用。
 	private boolean allowCircularReferences = true;
 
 	/**
@@ -510,9 +513,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// 包装类
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
+			// 确保这个Bean没有被实例化
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
+			// 真正的创建Bean
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		final Object bean = instanceWrapper.getWrappedInstance();
@@ -525,9 +530,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
+					// 执行BeanPostProcessor 后置处理
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
-				}
-				catch (Throwable ex) {
+				} catch (Throwable ex) {
 					throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 							"Post-processing of merged bean definition failed", ex);
 				}
@@ -537,6 +542,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
+		// 是单例 && 需要解决循环引用
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -544,6 +550,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			// 解决循环引用
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -895,6 +902,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	/**
 	 * Obtain a reference for early access to the specified bean,
 	 * typically for the purpose of resolving a circular reference.
+	 * 获得对指定bean的早期访问参考，通常是为了解决循环参考。
 	 * @param beanName the name of the bean (for error handling purposes)
 	 * @param mbd the merged bean definition for the bean
 	 * @param bean the raw bean instance
@@ -1032,6 +1040,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition
 	 */
 	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
+		// spring boot 下
+		//0 ApplicationContextAwareProcessor
+		//1 WebApplicationContextServletContextAwareProcessor
+		//2 ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor
+		//3 PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+		//4 ConfigurationPropertiesBindingPostProcessor
+		//5 {MethodValidationPostProcessor} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
+		//6 WebServerFactoryCustomizerBeanPostProcessor
+		//7 ErrorPageRegistrarBeanPostProcessor
+		//8 CommonAnnotationBeanPostProcessor
+		//9 AutowiredAnnotationBeanPostProcessor
+		//10 ApplicationListenerDetector
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof MergedBeanDefinitionPostProcessor) {
 				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
