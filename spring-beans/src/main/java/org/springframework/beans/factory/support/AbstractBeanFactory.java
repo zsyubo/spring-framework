@@ -216,7 +216,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
-			// 进去是FactoryBean
+			// 几区有两种情况，一种是已经成功构建好了Bean，一种是还在构建中的ObjectFactory
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		} else {
 			// Fail if we're already creating this bean instance:
@@ -227,7 +227,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			// Check if bean definition exists in this factory.
-			// 是否有父子容器，web环境有父子容器。
+			// 是否有父子容器，web环境有父子容器。（Spring boot 环境下为null）
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
@@ -268,6 +268,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						// 放入this.dependentBeanMap， 表明已经创建过一次了
 						registerDependentBean(dep, beanName);
 						try {
 							// 先去注册依赖的Bean
@@ -1234,6 +1235,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					try {
 						String parentBeanName = transformedBeanName(bd.getParentName());
 						if (!beanName.equals(parentBeanName)) {
+							// 获取父类的RootBeanDefinition
 							pbd = getMergedBeanDefinition(parentBeanName);
 						}
 						else {
