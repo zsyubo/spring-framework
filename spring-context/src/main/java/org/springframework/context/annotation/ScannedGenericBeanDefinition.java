@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
  * {@link AnnotatedGenericBeanDefinition#AnnotatedGenericBeanDefinition(AnnotationMetadata)}
  * but distinguishes by type beans that have been <em>scanned</em> vs those that have
  * been otherwise registered or detected by other means.
- *
+ * 存储的是类的元信息和类全名
  * @author Juergen Hoeller
  * @author Chris Beams
  * @since 2.5

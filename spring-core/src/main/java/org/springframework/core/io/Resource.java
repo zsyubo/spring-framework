@@ -16,6 +16,8 @@
 
 package org.springframework.core.io;
 
+import org.springframework.lang.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +26,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-import org.springframework.lang.Nullable;
-
 /**
  * Interface for a resource descriptor that abstracts from the actual
  * type of underlying resource, such as a file or class path resource.
@@ -33,7 +33,8 @@ import org.springframework.lang.Nullable;
  * <p>An InputStream can be opened for every resource if it exists in
  * physical form, but a URL or File handle can just be returned for
  * certain resources. The actual behavior is implementation-specific.
- *
+ * 对资源的封装。因为有不同的系统、不同的设备，网上、ftp、本地、io流等，通过封装来进行统一操作。屏蔽底层
+ * 很多框架都会有这样的设计，比如mybatis
  * @author Juergen Hoeller
  * @since 28.12.2003
  * @see #getInputStream()

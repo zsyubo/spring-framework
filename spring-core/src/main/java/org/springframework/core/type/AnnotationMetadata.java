@@ -21,15 +21,16 @@ import java.util.Set;
 /**
  * Interface that defines abstract access to the annotations of a specific
  * class, in a form that does not require that class to be loaded yet.
+ * 存储着类的元信息，其实就是获取注解的一些信息
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @author Phillip Webb
  * @author Sam Brannen
- * @since 2.5
  * @see StandardAnnotationMetadata
  * @see org.springframework.core.type.classreading.MetadataReader#getAnnotationMetadata()
  * @see AnnotatedTypeMetadata
+ * @since 2.5
  */
 public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata {
 
@@ -37,6 +38,8 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * Get the fully qualified class names of all annotation types that
 	 * are <em>present</em> on the underlying class.
 	 * @return the annotation type names
+	 *
+	 * 获取底层类上存在的所有注解类型的完全限定类名。
 	 */
 	Set<String> getAnnotationTypes();
 
@@ -55,6 +58,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * @param annotationName the fully qualified class name of the annotation
 	 * type to look for
 	 * @return {@code true} if a matching annotation is present
+	 * 是否由此注解
 	 */
 	boolean hasAnnotation(String annotationName);
 

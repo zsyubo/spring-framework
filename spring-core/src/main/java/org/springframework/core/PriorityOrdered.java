@@ -32,7 +32,7 @@ package org.springframework.core;
  * a special phase, ahead of other post-processor beans. This subtly
  * affects their autowiring behavior: they will only be autowired against
  * beans which do not require eager initialization for type matching.
- *
+ * 是否支持优先级策略
  * @author Juergen Hoeller
  * @since 2.5
  * @see org.springframework.beans.factory.config.PropertyOverrideConfigurer
