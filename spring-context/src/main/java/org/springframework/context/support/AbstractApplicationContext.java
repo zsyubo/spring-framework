@@ -653,6 +653,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 设置BeanFactory的类加载器、表达式解析器等
 		beanFactory.setBeanClassLoader(getClassLoader());
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
+		// todo 编辑器？撒玩意？
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.

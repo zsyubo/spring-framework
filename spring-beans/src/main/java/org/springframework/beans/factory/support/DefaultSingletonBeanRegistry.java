@@ -430,11 +430,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			return false;
 		}
 		String canonicalName = canonicalName(beanName);
-		// 如果有的话，肯定是这个Bean已经加载过一次了
+		// 如果有的话，肯定是这个beanName已经加载过一次了dependentBeanMap
+		// 查询出自己被谁依赖
 		Set<String> dependentBeans = this.dependentBeanMap.get(canonicalName);
 		if (dependentBeans == null) {
 			return false;
 		}
+		// 自己依赖自己
 		if (dependentBeans.contains(dependentBeanName)) {
 			return true;
 		}
