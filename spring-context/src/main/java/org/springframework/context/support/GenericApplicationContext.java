@@ -319,7 +319,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	@Override
 	public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
 			throws BeanDefinitionStoreException {
-
+		// 底层时调用后BeanFactory
 		this.beanFactory.registerBeanDefinition(beanName, beanDefinition);
 	}
 

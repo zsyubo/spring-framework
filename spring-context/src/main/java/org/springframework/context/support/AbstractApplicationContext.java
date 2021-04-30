@@ -519,6 +519,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
 				//为容器的某些子类指定特殊的 BeanPost 事件处理器
+				// 给予Application的一个拓展点。
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
@@ -541,6 +542,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize other special beans in specific context subclasses.
 				//调用子类的某些特殊 Bean 初始化方法
 				// 运用了模板方法。由子类去实现
+				// Spring boot tomcat 就是在这初始化的
 				onRefresh();
 
 				// Check for listener beans and register them.
@@ -669,7 +671,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
-		// 3.2 自动注入的支持
+		// 3.2 自动注入的支持,也就是当需要依赖注入下面这些类型时，注入配置好的对应的值
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);

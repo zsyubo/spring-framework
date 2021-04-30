@@ -199,7 +199,7 @@ class ConfigurationClassParser {
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
-		//
+		// 是否已经加载了
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			// 如果是Import的情况， 需要Import 指定的Bean来加载他
@@ -243,6 +243,7 @@ class ConfigurationClassParser {
 		// 是否是Component注解
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
+			// 处理嵌套类的情况
 			processMemberClasses(configClass, sourceClass);
 		}
 
@@ -283,6 +284,7 @@ class ConfigurationClassParser {
 			}
 		}
 
+		// Import注解处理
 		// Process any @Import annotations
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
@@ -299,6 +301,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
+		// 处理加有@Bean注解的方法
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
@@ -326,6 +329,7 @@ class ConfigurationClassParser {
 	 * Register member (nested) classes that happen to be configuration classes themselves.
 	 */
 	private void processMemberClasses(ConfigurationClass configClass, SourceClass sourceClass) throws IOException {
+		// 取内部类
 		Collection<SourceClass> memberClasses = sourceClass.getMemberClasses();
 		if (!memberClasses.isEmpty()) {
 			List<SourceClass> candidates = new ArrayList<>(memberClasses.size());
@@ -337,7 +341,9 @@ class ConfigurationClassParser {
 			}
 			OrderComparator.sort(candidates);
 			for (SourceClass candidate : candidates) {
+				// 是否需要Import
 				if (this.importStack.contains(configClass)) {
+					// 怎么进来了，Import的类已经在加载了，
 					this.problemReporter.error(new CircularImportProblem(configClass, this.importStack));
 				}
 				else {

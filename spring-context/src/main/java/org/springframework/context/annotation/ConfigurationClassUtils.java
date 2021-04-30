@@ -186,6 +186,7 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
+	 * 判断一个配置类是否为full类型
 	 * Determine whether the given bean definition indicates a full {@code @Configuration}
 	 * class, through checking {@link #checkConfigurationClassCandidate}'s metadata marker.
 	 */

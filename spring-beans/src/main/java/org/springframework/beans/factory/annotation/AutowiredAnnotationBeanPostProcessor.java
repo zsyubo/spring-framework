@@ -48,6 +48,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * <p>其实就是处理@Autowired和@Value</p>
  * {@link org.springframework.beans.factory.config.BeanPostProcessor} implementation
  * that autowires annotated fields, setter methods and arbitrary config methods.
  * Such members to be injected are detected through a Java 5 annotation: by default,
@@ -87,6 +88,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * methods to be replaced by the container at runtime. This is essentially a type-safe
  * version of {@code getBean(Class, args)} and {@code getBean(String, args)},
  * See {@link Lookup @Lookup's javadoc} for details.
+ *
+ * org.springframework.beans.factory.config.BeanPostProcessor的实现，可以自动连接注释的字段、setter方法和任意配置方法。这种要注入的成员是通过Java 5注解检测的：默认情况下，Spring的@Autowired和@Value注解。
+ * 也支持JSR-330的@Inject注解（如果有的话），作为Spring自己的@Autowired的直接替代品。
+ * 任何给定的Bean类中只有一个构造函数（最大）可以声明这个注解，并将 "required "参数设置为true，表示在作为Spring Bean使用时要自动连接的构造函数。如果有多个非必需的构造函数声明该注解，它们将被视为自动连接的候选者。将选择具有最大数量的依赖关系的构造函数，这些依赖关系可以由Spring容器中的匹配Bean来满足。如果没有一个候选者可以被满足，那么将使用一个主要的/默认的构造函数（如果存在的话）。如果一个类一开始只声明了一个构造函数，那么即使没有注释，它也会被使用。有注释的构造函数不一定是公共的。
+ * 字段在构造Bean之后，在任何配置方法被调用之前就被注入。这样的配置字段不一定是公共的。
+ * 配置方法可以有一个任意的名称和任意数量的参数；每个参数都将与Spring容器中的匹配Bean自动连接。Bean属性设置器方法实际上只是这种一般配置方法的一个特例。配置方法不一定是公共的。
+ * 注意：默认的 AutowiredAnnotationBeanPostProcessor 将被 "context:annotation-config" 和 "context:component-scan" XML 标签注册。如果你打算指定一个自定义的 AutowiredAnnotationBeanPostProcessor Bean 定义，请删除或关闭那里的默认注释配置。
+ * 注意：注解注入将在XML注入之前进行；因此，对于通过两种方法连接的属性，后者的配置将覆盖前者。
+ * 除了上面讨论的常规注入点外，这个后处理器还处理Spring的@Lookup注解，该注解确定了将在运行时由容器替换的查找方法。这基本上是getBean(Class, args)和getBean(String, args)的类型安全版本，详见@Lookup的javadoc。
+ *
  *
  * @author Juergen Hoeller
  * @author Mark Fisher
@@ -573,6 +584,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 				Assert.state(beanFactory != null, "No BeanFactory available");
 				TypeConverter typeConverter = beanFactory.getTypeConverter();
 				try {
+					// 依赖注入的核心语句
 					value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
 				}
 				catch (BeansException ex) {

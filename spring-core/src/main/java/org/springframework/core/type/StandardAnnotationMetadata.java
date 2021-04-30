@@ -55,6 +55,8 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	}
 
 	/**
+	 * 为给定的类创建一个新的StandardAnnotationMetadata包装器，提供选项以org.springframework.core.annotation.AnnotationAttributes的形式返回任何嵌套注解或注解数组，而不是实际的注解实例。
+	 *
 	 * Create a new {@link StandardAnnotationMetadata} wrapper for the given Class,
 	 * providing the option to return any nested annotations or annotation arrays in the
 	 * form of {@link org.springframework.core.annotation.AnnotationAttributes} instead

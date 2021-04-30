@@ -65,6 +65,10 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.CONFI
  * their corresponding bean definitions registered before any other
  * {@link BeanFactoryPostProcessor} executes.
  *
+ * BeanFactoryPostProcessor，用于对@Configuration类进行引导处理。
+ * 在使用 <context:annotation-config/> 或 <context:component-scan/> 时默认注册。否则，可以像其他BeanFactoryPostProcessor一样手动声明。
+ * 这个后处理器是按优先级排序的，因为在任何其他BeanFactoryPostProcessor执行之前，在@Configuration类中声明的任何Bean方法都必须注册其相应的Bean定义。
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Phillip Webb
@@ -289,7 +293,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		if (registry instanceof SingletonBeanRegistry) {
 			sbr = (SingletonBeanRegistry) registry;
 			if (!this.localBeanNameGeneratorSet) {
-				// 自定义 BeanName生成器？
+				// 自定义 BeanName生成器
+				// 可以吧 beanName命名为org.springframework.context.annotation.internalConfigurationBeanNameGenerator
+				// 默认是实现AnnotationBeanNameGenerator，在AnnotatedBeanDefinitionReader中定义的
 				BeanNameGenerator generator = (BeanNameGenerator) sbr.getSingleton(CONFIGURATION_BEAN_NAME_GENERATOR);
 				// 调试发现为NULL
 				if (generator != null) {

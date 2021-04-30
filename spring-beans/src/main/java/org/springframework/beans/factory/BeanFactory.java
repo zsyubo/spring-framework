@@ -156,6 +156,13 @@ public interface BeanFactory {
 	<T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
 	/**
+	 *
+	 * 返回指定Bean的一个实例，该实例可以是共享的或独立的。
+	 * 与getBean(String)的行为相同，但通过在Bean不属于所需类型时抛出BeanNotOfRequiredTypeException来提供类型安全的措施。这意味着在正确铸造结果时不能抛出ClassCastException，就像getBean(String)可能发生的那样。
+	 * 将别名翻译成相应的规范化Bean名称。如果在本工厂实例中找不到Bean，将询问父工厂。
+	 * 在常规的BeanFactoryPostProcessor检测开始之前的initions。特别是，BeanDefinitionRegistryPostProcessor可以注册更多的Bean定义，而这些定义又会定义BeanFactoryPostProcessor实例。
+	 *
+	 *
 	 * Return an instance, which may be shared or independent, of the specified bean.
 	 * <p>Allows for specifying explicit constructor arguments / factory method arguments,
 	 * overriding the specified default arguments (if any) in the bean definition.
@@ -303,6 +310,9 @@ public interface BeanFactory {
 	boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException;
 
 	/**
+	 * 检查具有给定名称的Bean是否与指定类型相匹配。更确切地说，检查对给定名称的getBean调用是否会返回一个可分配给指定目标类型的对象。
+	 * 将别名翻译成相应的规范化Bean名称。如果在本工厂实例中找不到Bean，将询问父工厂。
+	 *
 	 * Check whether the bean with the given name matches the specified type.
 	 * More specifically, check whether a {@link #getBean} call for the given name
 	 * would return an object that is assignable to the specified target type.

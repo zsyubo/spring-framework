@@ -30,6 +30,9 @@ import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * BeanPostProcessor可以检测实现ApplicationListener接口的Bean。这可以捕获那些不能被getBeanNamesForType和相关操作可靠地检测到的Bean，这些操作只对顶级Bean有效。
+ * 在标准的Java序列化中，这个后处理程序不会被序列化为DisposableBeanAdapter的一部分来开始。然而，在其他的序列化机制中，DisposableBeanAdapter.writeReplace可能根本就不会被使用，所以我们将这个后处理器的字段状态防御性地标记为瞬时。
+ *
  * {@code BeanPostProcessor} that detects beans which implement the {@code ApplicationListener}
  * interface. This catches beans that can't reliably be detected by {@code getBeanNamesForType}
  * and related operations which only work against top-level beans.
