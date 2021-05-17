@@ -43,6 +43,10 @@ import org.springframework.lang.Nullable;
 public interface BeanPostProcessor {
 
 	/**
+	 * 在任何Bean初始化回调（如InitializingBean的afterPropertiesSet或自定义init-method）之前，将此BeanPostProcessor应用于给定的新Bean实例。
+	 * 该bean将已经被填充了属性值。返回的Bean实例可能是一个围绕原始Bean的包装器。
+	 * 默认实现是按原样返回给定的Bean。
+	 *
 	 * Apply this BeanPostProcessor to the given new bean instance <i>before</i> any bean
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
 	 * or a custom init-method). The bean will already be populated with property values.
@@ -61,6 +65,13 @@ public interface BeanPostProcessor {
 	}
 
 	/**
+	 * 在任何Bean初始化回调（如InitializingBean的afterPropertiesSet或自定义init-method）之后，将此BeanPostProcessor应用于指定的新Bean实例。
+	 * 该bean将已经被填充了属性值。返回的Bean实例可能是一个围绕原始Bean的包装器。
+	 * 如果是FactoryBean，这个回调将同时为FactoryBean实例和由FactoryBean创建的对象调用（从Spring 2.0开始）。
+	 * 后处理程序可以通过相应的Bean instanceof FactoryBean检查来决定是否应用于FactoryBean或创建的对象或两者。
+	 * 这个回调也会在InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation方法触发的短路后被调用，与所有其他BeanPostProcessor回调相反。
+	 * 默认实现是按原样返回给定的Bean。
+	 *
 	 * Apply this BeanPostProcessor to the given new bean instance <i>after</i> any bean
 	 * initialization callbacks (like InitializingBean's {@code afterPropertiesSet}
 	 * or a custom init-method). The bean will already be populated with property values.

@@ -48,6 +48,9 @@ import java.lang.reflect.Method;
 public interface MethodMatcher {
 
 	/**
+	 * 执行静态检查给定方法是否匹配。
+	 * 如果返回false或者isRuntime()方法返回false，将不进行运行时检查（即不进行match(Method, Class, Object[])调用）。
+	 *
 	 * Perform static checking whether the given method matches.
 	 * <p>If this returns {@code false} or if the {@link #isRuntime()}
 	 * method returns {@code false}, no runtime check (i.e. no

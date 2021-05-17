@@ -641,6 +641,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 确定给定Bean定义的目标类型。
 	 * Determine the target type for the given bean definition.
 	 * @param beanName the name of the bean (for error handling purposes)
 	 * @param mbd the merged bean definition for the bean
@@ -1073,6 +1074,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 应用实例化前的后处理程序，解决指定Bean是否有实例化前的快捷方式。
+	 *
 	 * Apply before-instantiation post-processors, resolving whether there is a
 	 * before-instantiation shortcut for the specified bean.
 	 * @param beanName the name of the bean
@@ -1370,6 +1373,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean continueWithPropertyPopulation = true;
 		// 如果用户自定义bean 则不处理
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+			//0 = {ApplicationContextAwareProcessor@5045}
+			//1 = {WebApplicationContextServletContextAwareProcessor@5047}
+			//2 = {ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor@5048}
+			//3 = {PostProcessorRegistrationDelegate$BeanPostProcessorChecker@5556}
+			//4 = {ConfigurationPropertiesBindingPostProcessor@5557}
+			//5 = {AnnotationAwareAspectJAutoProxyCreator@5558} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
+			//6 = {MethodValidationPostProcessor@5559} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
+			//7 = {CatBeanPostProcessor@5441}
+			//8 = {WebServerFactoryCustomizerBeanPostProcessor@5560}
+			//9 = {ErrorPageRegistrarBeanPostProcessor@5561}
+			//10 = {CommonAnnotationBeanPostProcessor@5562}
+			//11 = {AutowiredAnnotationBeanPostProcessor@5563}
+			//12 = {ApplicationListenerDetector@5564}
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
@@ -1412,6 +1428,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 			// 依赖注入
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
+				//0 = {ApplicationContextAwareProcessor@4908}
+				//1 = {WebApplicationContextServletContextAwareProcessor@4910}
+				//2 = {ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor@3991}
+				//3 = {PostProcessorRegistrationDelegate$BeanPostProcessorChecker@6102}
+				//4 = {ConfigurationPropertiesBindingPostProcessor@6103}
+				//5 = {AnnotationAwareAspectJAutoProxyCreator@5246} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
+				//6 = {MethodValidationPostProcessor@6104} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
+				//7 = {CatBeanPostProcessor@5393}
+				//8 = {WebServerFactoryCustomizerBeanPostProcessor@6105}
+				//9 = {ErrorPageRegistrarBeanPostProcessor@6106}
+				//10 = {CommonAnnotationBeanPostProcessor@5032}
+				//11 = {AutowiredAnnotationBeanPostProcessor@5033}
+				//12 = {ApplicationListenerDetector@6107}
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 					// AutowiredAnnotationBeanPostProcessor 完成 Autowire ，，，Spring boot中，配置文件的值也是这个注入的。

@@ -23,7 +23,12 @@ import org.springframework.lang.Nullable;
 import java.beans.PropertyDescriptor;
 
 /**
- *  其实就是实例化前后的回调
+ *
+ *  BeanPostProcessor的子界面，增加了一个实例化前的回调，以及一个实例化后但在显式属性设置或自动布线发生前的回调。
+ * 通常用于抑制特定目标Bean的默认实例化，例如用特殊的TargetSources（池化目标、懒惰地初始化目标等）创建代理，或者实现额外的注入策略，如字段注入。
+ * 注意：这个接口是一个特殊用途的接口，主要用于框架的内部使用。建议尽可能地实现普通的BeanPostProcessor接口，或者从InstantiationAwareBeanPostProcessorAdapter派生，以便免受该接口的扩展影响。
+ *
+ *
  * Subinterface of {@link BeanPostProcessor} that adds a before-instantiation callback,
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
@@ -48,6 +53,13 @@ import java.beans.PropertyDescriptor;
 public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 
 	/**
+	 *
+	 * 在目标Bean被实例化之前应用这个BeanPostProcessor。返回的Bean对象可以是一个代理，用来代替目标Bean，有效地抑制了目标Bean的默认实例化。
+	 * 如果这个方法返回的是一个非空对象，Bean的创建过程将被短路。唯一应用的进一步处理是配置的BeanPostProcessors的postProcessAfterInitialization回调。
+	 * 这个回调将被应用于带有其Bean类的Bean定义，以及工厂方法定义，在这种情况下，返回的Bean类型将被传入这里。
+	 * 后处理器可以实现扩展的SmartInstantiationAwareBeanPostProcessor接口，以预测它们将在这里返回的bean对象的类型。
+	 * 默认实现返回null。
+	 *
 	 * Apply this BeanPostProcessor <i>before the target bean gets instantiated</i>.
 	 * The returned bean object may be a proxy to use instead of the target bean,
 	 * effectively suppressing default instantiation of the target bean.
@@ -71,7 +83,7 @@ public interface InstantiationAwareBeanPostProcessor extends BeanPostProcessor {
 	 * @see org.springframework.beans.factory.support.AbstractBeanDefinition#getBeanClass()
 	 * @see org.springframework.beans.factory.support.AbstractBeanDefinition#getFactoryMethodName()
 	 */
-	@Nullable
+	@Nullable   // postProcessBeforeInitialization
 	default Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
 		return null;
 	}

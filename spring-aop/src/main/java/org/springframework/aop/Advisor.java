@@ -19,6 +19,10 @@ package org.springframework.aop;
 import org.aopalliance.aop.Advice;
 
 /**
+ * 增强器？？
+ * 持有AOP建议（在连接点采取的行动）和决定建议适用性的过滤器（如一个点切）的基础接口。这个接口不是给Spring用户使用的，而是为了让不同类型的建议得到共同的支持。
+ * Spring AOP是围绕着通过方法拦截提供建议而建立的，符合AOP联盟的拦截API。顾问接口允许支持不同类型的建议，如建议前和建议后，这不需要使用拦截来实现。
+ *
  * Base interface holding AOP <b>advice</b> (action to take at a joinpoint)
  * and a filter determining the applicability of the advice (such as
  * a pointcut). <i>This interface is not for use by Spring users, but to

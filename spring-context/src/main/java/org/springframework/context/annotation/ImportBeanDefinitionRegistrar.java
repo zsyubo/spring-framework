@@ -50,6 +50,9 @@ import org.springframework.core.type.AnnotationMetadata;
 public interface ImportBeanDefinitionRegistrar {
 
 	/**
+	 * 根据导入的@Configuration类的给定注释元数据，必要时注册Bean定义。
+	 * 注意BeanDefinitionRegistryPostProcessor类型可能不会在这里注册，因为与@Configuration类处理有关的生命周期限制。
+	 *
 	 * Register bean definitions as necessary based on the given annotation metadata of
 	 * the importing {@code @Configuration} class.
 	 * <p>Note that {@link BeanDefinitionRegistryPostProcessor} types may <em>not</em> be
