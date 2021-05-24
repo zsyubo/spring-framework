@@ -312,6 +312,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			// 。。就是返回一个beanName
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
 			if (this.earlyProxyReferences.remove(cacheKey) != bean) {
+				// 注意，如果aop发生循环依赖，wrapIfNecessary会进行早期执行，，，，，也就是说getEarlyBeanReference也会调用这个方法
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
 		}
@@ -347,7 +348,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	/**
 	 * 如果有必要，即如果它符合被代理的条件，就把给定的bean包起来。
-	 *
+	 * 注意，如果aop发生循环依赖，wrapIfNecessary会进行早期执行，，，，，也就是说此方法的执行会被提前到getEarlyBeanReference方法中(也就是会调用这个方法)
 	 * Wrap the given bean if necessary, i.e. if it is eligible for being proxied.
 	 * @param bean the raw bean instance
 	 * @param beanName the name of the bean

@@ -19,6 +19,9 @@ package org.springframework.beans.factory.config;
 import org.springframework.lang.Nullable;
 
 /**
+ * 定义共享bean实例的注册表的接口。可以由org.springframework.beans.factory.BeanFactory实现，以便以统一的方式公开其单子管理设施。
+ * 可配置的BeanFactory接口扩展了这个接口。
+ *
  * Interface that defines a registry for shared bean instances.
  * Can be implemented by {@link org.springframework.beans.factory.BeanFactory}
  * implementations in order to expose their singleton management facility
@@ -35,6 +38,12 @@ import org.springframework.lang.Nullable;
 public interface SingletonBeanRegistry {
 
 	/**
+	 * 将给定的现有对象作为单子在bean注册表中以给定的bean名称注册。
+	 * 给定的实例应该是完全初始化的；注册表不会执行任何初始化回调（特别是，它不会调用InitializingBean的afterPropertiesSet方法）。给定的实例也不会收到任何销毁回调（如DisposableBean的destroy方法）。
+	 * 当在一个完整的BeanFactory中运行时。如果你的Bean需要接收初始化和/或销毁回调，请注册一个Bean定义而不是一个现有的实例。
+	 * 通常是在注册表配置过程中调用，但也可用于运行时注册单体。因此，注册表的实现应该同步单子的访问；如果它支持BeanFactory对单子的懒惰初始化，它就必须这样做。
+	 *
+	 *
 	 * Register the given existing object as singleton in the bean registry,
 	 * under the given bean name.
 	 * <p>The given instance is supposed to be fully initialized; the registry

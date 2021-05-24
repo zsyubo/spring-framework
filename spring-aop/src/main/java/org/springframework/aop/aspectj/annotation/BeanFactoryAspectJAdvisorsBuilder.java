@@ -74,6 +74,8 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 
 	/**
+	 * 在当前bean工厂中寻找AspectJ注释的aspect Bean，并返回到代表它们的Spring AOP顾问列表。为每个AspectJ建议方法创建一个Spring顾问。
+	 * 这个类就是返回我们定义好的aop切面
 	 * Look for AspectJ-annotated aspect beans in the current bean factory,
 	 * and return to a list of Spring AOP Advisors representing them.
 	 * <p>Creates a Spring Advisor for each AspectJ advice method.
@@ -101,6 +103,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (beanType == null) {
 							continue;
 						}
+						// (加了@Aspect注解 && 实例变量名命名规则不为ajc$) 才会生效
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);

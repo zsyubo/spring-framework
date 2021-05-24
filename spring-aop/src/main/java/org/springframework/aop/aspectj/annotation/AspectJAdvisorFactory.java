@@ -39,6 +39,10 @@ import org.springframework.lang.Nullable;
 public interface AspectJAdvisorFactory {
 
 	/**
+	 * 根据AspectJ的org.aspectj.lang.reflect.AjTypeSystem报告，确定给定的类是否是一个切面。
+	 * 如果假定的方面是无效的（例如一个具体方面类的扩展），将简单地返回false。
+	 * 对于Spring AOP无法处理的某些方面，例如不支持实例化模型的方面，将返回true。如有必要，请使用验证方法来处理这些情况。
+	 *
 	 * Determine whether or not the given class is an aspect, as reported
 	 * by AspectJ's {@link org.aspectj.lang.reflect.AjTypeSystem}.
 	 * <p>Will simply return {@code false} if the supposed aspect is

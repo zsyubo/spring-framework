@@ -303,6 +303,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	}
 
 	/**
+	 * 对给定的Bean定义应用进一步的设置，超出了从扫描组件类中检索到的内容。
+	 *
 	 * Apply further settings to the given bean definition,
 	 * beyond the contents retrieved from scanning the component class.
 	 * @param beanDefinition the scanned bean definition
@@ -312,6 +314,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		beanDefinition.applyDefaults(this.beanDefinitionDefaults);
 		// 是否自定义匹配模式
 		if (this.autowireCandidatePatterns != null) {
+			// debug为空
 			beanDefinition.setAutowireCandidate(PatternMatchUtils.simpleMatch(this.autowireCandidatePatterns, beanName));
 		}
 	}

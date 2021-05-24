@@ -17,6 +17,13 @@
 package org.springframework.context;
 
 /**
+ * 生命周期接口的一个扩展，用于那些需要在ApplicationContext刷新和/或关闭时按特定顺序启动的对象。isAutoStartup()的返回值表明该对象是否应该在上下文刷新时被启动。接受回调的stop(Runnable)方法对于有异步关机过程的对象很有用。这个接口的任何实现都必须在关机完成后调用回调的run()方法，以避免整个ApplicationContext关机过程中出现不必要的延迟。
+ * 这个接口扩展了Phased，getPhase()方法的返回值表示这个生命周期组件应该在哪个阶段启动和停止。启动过程从最低的阶段值开始，以最高的阶段值结束（Integer.MIN_VALUE是可能的最低值，Integer.MAX_VALUE是可能的最高值）。关机过程将采用相反的顺序。任何具有相同价值的组件将在同一阶段内被任意排序。
+ * 例如：如果组件B依赖于组件A已经启动，那么组件A的相位值应该比组件B低。在关机过程中，组件B将在组件A之前被停止。
+ * 任何明确的 "依赖 "关系将优先于阶段顺序，这样，依赖的Bean总是在其依赖的对象之后开始，并且总是在其依赖的对象之前停止。
+ * 上下文中任何没有实现SmartLifecycle的生命周期组件将被视为其相位值为0。这样一来，如果SmartLifecycle的相位值为负数，它可以在这些生命周期组件之前启动，如果相位值为正数，它可以在这些组件之后启动。
+ * 请注意，由于SmartLifecycle支持自动启动，在任何情况下，SmartLifecycle Bean实例通常会在应用上下文的启动时被初始化。因此，bean definition lazy-init标志对SmartLifecycle Bean的实际影响非常有限。
+ *
  * An extension of the {@link Lifecycle} interface for those objects that require to
  * be started upon ApplicationContext refresh and/or shutdown in a particular order.
  * The {@link #isAutoStartup()} return value indicates whether this object should

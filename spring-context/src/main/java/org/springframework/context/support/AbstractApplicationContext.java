@@ -802,6 +802,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initLifecycleProcessor() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		// 是否有lifecycleProcessor这个bean。一般是没有
 		if (beanFactory.containsLocalBean(LIFECYCLE_PROCESSOR_BEAN_NAME)) {
 			this.lifecycleProcessor =
 					beanFactory.getBean(LIFECYCLE_PROCESSOR_BEAN_NAME, LifecycleProcessor.class);
@@ -900,18 +901,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	}
 
 	/**
+	 * 完成该上下文的刷新，调用LifecycleProcessor的onRefresh()方法并发布ContextRefreshedEvent。
+	 *
 	 * Finish the refresh of this context, invoking the LifecycleProcessor's
 	 * onRefresh() method and publishing the
 	 * {@link org.springframework.context.event.ContextRefreshedEvent}.
 	 */
 	protected void finishRefresh() {
 		// Clear context-level resource caches (such as ASM metadata from scanning).
+		// 清除上下文级别的资源缓存（如扫描的ASM元数据）。
 		clearResourceCaches();
 
 		// Initialize lifecycle processor for this context.
+		// 为该上下文初始化生命周期处理器。
 		initLifecycleProcessor();
 
 		// Propagate refresh to lifecycle processor first.
+		// 首先将刷新传播给生命周期处理器。
 		getLifecycleProcessor().onRefresh();
 
 		// Publish the final event.

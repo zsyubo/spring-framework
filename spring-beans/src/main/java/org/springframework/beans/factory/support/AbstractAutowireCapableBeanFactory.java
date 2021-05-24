@@ -924,7 +924,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
-					// InstantiationAwareBeanPostProcessorAdapter
+					// ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor  继承自抽象父类InstantiationAwareBeanPostProcessorAdapter：直接返回 bean，不过处理
+					// AutowiredAnnotationBeanPostProcessor  继承自抽象父类InstantiationAwareBeanPostProcessorAdapter：直接返回 bean，不过处理
+					// AnnotationAwareAspectJAutoProxyCreator todo 做了特殊处理,,,,如果有切面，则返回代理对象。默认为cglib
 					// 主要是AOP使用
 					SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
 					exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);
@@ -1054,17 +1056,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
 		// spring boot 下
-		//0 ApplicationContextAwareProcessor
-		//1 WebApplicationContextServletContextAwareProcessor
-		//2 ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor
-		//3 PostProcessorRegistrationDelegate$BeanPostProcessorChecker
-		//4 ConfigurationPropertiesBindingPostProcessor
-		//5 {MethodValidationPostProcessor} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
-		//6 WebServerFactoryCustomizerBeanPostProcessor
-		//7 ErrorPageRegistrarBeanPostProcessor
-		//8 CommonAnnotationBeanPostProcessor
-		//9 AutowiredAnnotationBeanPostProcessor
-		//10 ApplicationListenerDetector
+//		org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+//		org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+//		org.springframework.context.support.ApplicationListenerDetector
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof MergedBeanDefinitionPostProcessor) {
 				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
@@ -1102,6 +1096,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 将InstantiationAwareBeanPostProcessors应用于指定的Bean定义（按类和名称），调用其postProcessBeforeInstantiation方法。
+	 * 任何返回的对象将被用作Bean，而不是实际实例化目标Bean。后处理程序的空返回值将导致目标Bean被实例化。
+	 *
 	 * Apply InstantiationAwareBeanPostProcessors to the specified bean definition
 	 * (by class and name), invoking their {@code postProcessBeforeInstantiation} methods.
 	 * <p>Any returned object will be used as the bean instead of actually instantiating
@@ -1114,6 +1111,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	@Nullable
 	protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
+		//ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor  继承自抽象父类InstantiationAwareBeanPostProcessorAdapter:: 返回null
+		//AnnotationAwareAspectJAutoProxyCreator  AbstractAutoProxyCreator.postProcessBeforeInstantiation:: 基本都是返回null
+		//CommonAnnotationBeanPostProcessor  返回null
+		//AutowiredAnnotationBeanPostProcessor  返回null
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof InstantiationAwareBeanPostProcessor) {
 				InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;

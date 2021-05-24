@@ -275,9 +275,11 @@ class ConfigurationClassParser {
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
 					BeanDefinition bdCand = holder.getBeanDefinition().getOriginatingBeanDefinition();
 					if (bdCand == null) {
+						// 会进
 						bdCand = holder.getBeanDefinition();
 					}
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
+						// 会进
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}
 				}

@@ -271,6 +271,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 	// overridable hooks
 
 	/**
+	 * 检索所有适用的Lifecycle Bean：所有已经创建的singletons，以及所有SmartLifecycle Bean（即使它们被标记为lazy-init）。
+	 *
 	 * Retrieve all applicable Lifecycle beans: all singletons that have already been created,
 	 * as well as all SmartLifecycle beans (even if they are marked as lazy-init).
 	 * @return the Map of applicable beans, with bean names as keys and bean instances as values
@@ -278,6 +280,7 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 	protected Map<String, Lifecycle> getLifecycleBeans() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		Map<String, Lifecycle> beans = new LinkedHashMap<>();
+		// 返回所有实现了Lifecycle的Bean
 		String[] beanNames = beanFactory.getBeanNamesForType(Lifecycle.class, false, false);
 		for (String beanName : beanNames) {
 			String beanNameToRegister = BeanFactoryUtils.transformedBeanName(beanName);

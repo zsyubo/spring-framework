@@ -144,6 +144,13 @@ public interface ListableBeanFactory extends BeanFactory {
 	String[] getBeanNamesForType(@Nullable Class<?> type);
 
 	/**
+	 * 返回符合给定类型的Bean名称（包括子类），从Bean定义或FactoryBeans的getObjectType的值判断。
+	 * 注意：这个方法只检查顶层Bean。它不检查可能也符合指定类型的嵌套Bean。
+	 * 如果 "allowEagerInit "标志被设置，它将考虑由FactoryBean创建的对象，这意味着FactoryBean将被初始化。如果FactoryBean创建的对象不匹配，原始的FactoryBean本身将被匹配到该类型。如果 "allowEagerInit "没有被设置，只有原始的FactoryBean会被检查（这不需要初始化每个FactoryBean）。
+	 * 不考虑该工厂可能参与的任何层次结构。使用BeanFactoryUtils的beanNamesForTypeIncludingAncestors也可以包括祖先工厂的Bean。
+	 * 注意：不会忽略那些通过其他方式而非Bean定义注册的单子Bean。
+	 * 此方法返回的Bean名称应尽可能按照后台配置中的定义顺序返回Bean名称。
+	 *
 	 * Return the names of beans matching the given type (including subclasses),
 	 * judging from either bean definitions or the value of {@code getObjectType}
 	 * in the case of FactoryBeans.
