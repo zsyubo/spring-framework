@@ -85,7 +85,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	}
 
 	/**
-	 * 我们需要检测这一点，因为 "代码风格 "的AspectJ方面不应该被Spring AOP所解释。
+	 * 我们需要检测这一点，因为 "代码风格"的AspectJ方面不应该被Spring AOP所解释。
 	 *  其实就是判断变量名是否是ajc$开头
 	 * We need to detect this as "code-style" AspectJ aspects should not be
 	 * interpreted by Spring AOP.

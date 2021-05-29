@@ -43,6 +43,7 @@ import org.springframework.lang.Nullable;
 public interface BeanPostProcessor {
 
 	/**
+	 * -
 	 * 在任何Bean初始化回调（如InitializingBean的afterPropertiesSet或自定义init-method）之前，将此BeanPostProcessor应用于给定的新Bean实例。
 	 * 该bean将已经被填充了属性值。返回的Bean实例可能是一个围绕原始Bean的包装器。
 	 * 默认实现是按原样返回给定的Bean。

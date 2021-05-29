@@ -373,6 +373,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object result = existingBean;
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
+			// org.springframework.context.support.ApplicationContextAwareProcessor
+			// org.springframework.boot.web.servlet.context.WebApplicationContextServletContextAwareProcessor
+			// org.springframework.context.annotation.ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor
+			// org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker
+			// org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor
+			// org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator
+			// org.springframework.validation.beanvalidation.MethodValidationPostProcessor
+			// com.xiaohu.listeners.beanPostProcessor.CatBeanPostProcessor
+			// org.springframework.boot.web.server.WebServerFactoryCustomizerBeanPostProcessor
+			// org.springframework.boot.web.server.ErrorPageRegistrarBeanPostProcessor
+			// org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+			// org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor
+			// org.springframework.context.support.ApplicationListenerDetector
 			Object current = processor.postProcessBeforeInitialization(result, beanName);
 			if (current == null) {
 				return result;
@@ -1374,19 +1387,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean continueWithPropertyPopulation = true;
 		// 如果用户自定义bean 则不处理
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-			//0 = {ApplicationContextAwareProcessor@5045}
-			//1 = {WebApplicationContextServletContextAwareProcessor@5047}
-			//2 = {ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor@5048}
-			//3 = {PostProcessorRegistrationDelegate$BeanPostProcessorChecker@5556}
-			//4 = {ConfigurationPropertiesBindingPostProcessor@5557}
-			//5 = {AnnotationAwareAspectJAutoProxyCreator@5558} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
-			//6 = {MethodValidationPostProcessor@5559} "proxyTargetClass=true; optimize=false; opaque=false; exposeProxy=false; frozen=false"
-			//7 = {CatBeanPostProcessor@5441}
-			//8 = {WebServerFactoryCustomizerBeanPostProcessor@5560}
-			//9 = {ErrorPageRegistrarBeanPostProcessor@5561}
-			//10 = {CommonAnnotationBeanPostProcessor@5562}
-			//11 = {AutowiredAnnotationBeanPostProcessor@5563}
-			//12 = {ApplicationListenerDetector@5564}
+			//ConfigurationClassPostProcessor$ImportAwareBeanPostProcessor
+			//AnnotationAwareAspectJAutoProxyCreator
+			//CommonAnnotationBeanPostProcessor
+			//AutowiredAnnotationBeanPostProcessor
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;

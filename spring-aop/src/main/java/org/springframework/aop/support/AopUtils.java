@@ -294,6 +294,7 @@ public abstract class AopUtils {
 	}
 
 	/**
+	 * 方法要过滤出可以代理的增强器（也就是能切该Bean的切面）
 	 * Determine the sublist of the {@code candidateAdvisors} list
 	 * that is applicable to the given class.
 	 * @param candidateAdvisors the Advisors to evaluate

@@ -49,7 +49,7 @@ public interface ConfigurableListableBeanFactory
 	 */
 	void ignoreDependencyType(Class<?> type);
 
-	/**
+	/** -
 	 * 忽略给定的自动布线的依赖接口。
 	 * 这通常会被应用程序上下文用来注册以其他方式解决的依赖关系，如通过BeanFactoryAware的BeanFactory或通过ApplicationContextAware的ApplicationContext。
 	 * 默认情况下，只有BeanFactoryAware接口被忽略。对于要忽略的其他类型，请为每个类型调用此方法。

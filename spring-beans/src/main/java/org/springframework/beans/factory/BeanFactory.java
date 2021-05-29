@@ -26,7 +26,10 @@ import org.springframework.lang.Nullable;
  * further interfaces such as {@link ListableBeanFactory} and
  * {@link org.springframework.beans.factory.config.ConfigurableBeanFactory}
  * are available for specific purposes.
- * 根接口范文spring bean 容器，这是一个基本的 客户端 查看  bean 容器，更多的接口 比如 ListableBeanFactory 和 ConfigurableBeanFactory 用于特定的目的。这接口 包含很多bean definitions 对象实现，每一个 identified 用String标识
+ *
+ * 根接口范文spring bean 容器，这是一个基本的 客户端 查看  bean 容器，更多的接口 比如 ListableBeanFactory和ConfigurableBeanFactory用于特定的目的。
+ * 这接口包含很多beandefinitions对象实现，每一个identified用String标识
+ *
  * <p>This interface is implemented by objects that hold a number of bean definitions,
  * each uniquely identified by a String name. Depending on the bean definition,
  * the factory will return either an independent instance of a contained object

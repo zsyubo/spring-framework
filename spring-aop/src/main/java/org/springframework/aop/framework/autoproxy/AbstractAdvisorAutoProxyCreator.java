@@ -80,8 +80,8 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 		return advisors.toArray();
 	}
 
-	/**
-	 * 查找所有合格的顾问以自动代理该class。
+	/** -
+	 * 查找所有合格的增强器以自动代理该class。
 	 *
 	 * Find all eligible Advisors for auto-proxying this class.
 	 * @param beanClass the clazz to find advisors for
@@ -93,8 +93,11 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 * @see #extendAdvisors
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class<?> beanClass, String beanName) {
-		//
+		//  从BeanFactory#beanDefinitionNames中查找实现了Advisor接口的类
+		//  查找自定义AOP实现
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
+
+		//
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
@@ -111,6 +114,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 */
 	protected List<Advisor> findCandidateAdvisors() {
 		Assert.state(this.advisorRetrievalHelper != null, "No BeanFactoryAdvisorRetrievalHelper available");
+		// 注意此处被子类重写了
 		return this.advisorRetrievalHelper.findAdvisorBeans();
 	}
 
