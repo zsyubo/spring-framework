@@ -27,6 +27,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
 /**
+ * 启用Spring的注释驱动的事务管理能力。要在@Configuration类上使用
+ *
  * Enables Spring's annotation-driven transaction management capability, similar to
  * the support found in Spring's {@code <tx:*>} XML namespace. To be used on
  * {@link org.springframework.context.annotation.Configuration @Configuration}
@@ -170,6 +172,9 @@ public @interface EnableTransactionManagement {
 	boolean proxyTargetClass() default false;
 
 	/**
+	 * 指出交易建议应如何应用。
+	 * 默认是AdviceMode.PROXY。请注意，代理模式只允许通过代理拦截调用。同类中的本地调用不能被拦截；本地调用中的方法的事务性注解将被忽略，因为Spring的拦截器甚至不会在这种运行时情况下启动。对于更高级的拦截模式，可以考虑将其切换为AdviceMode.ASPECTJ。
+	 *
 	 * Indicate how transactional advice should be applied.
 	 * <p><b>The default is {@link AdviceMode#PROXY}.</b>
 	 * Please note that proxy mode allows for interception of calls through the proxy

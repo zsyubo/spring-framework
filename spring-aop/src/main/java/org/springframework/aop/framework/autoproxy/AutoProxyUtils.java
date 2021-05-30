@@ -102,6 +102,8 @@ public abstract class AutoProxyUtils {
 	}
 
 	/**
+	 * 如果可能的话，为指定的Bean公开给定的目标类。
+	 *
 	 * Expose the given target class for the specified bean, if possible.
 	 * @param beanFactory the containing ConfigurableListableBeanFactory
 	 * @param beanName the name of the bean

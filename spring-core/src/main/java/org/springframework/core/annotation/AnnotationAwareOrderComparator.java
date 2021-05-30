@@ -26,6 +26,9 @@ import org.springframework.core.OrderComparator;
 import org.springframework.lang.Nullable;
 
 /**
+ * AnnotationAwareOrderComparator是OrderComparator的扩展，支持Spring的org.springframework.core.Ordered接口以及@Order和@Priority注解，Ordered实例提供的顺序值覆盖静态定义的注解值（如果有）。
+ * 关于非排序对象的排序语义的细节，请参考OrderComparator的Javadoc。
+ *
  * {@code AnnotationAwareOrderComparator} is an extension of
  * {@link OrderComparator} that supports Spring's
  * {@link org.springframework.core.Ordered} interface as well as the
@@ -114,6 +117,9 @@ public class AnnotationAwareOrderComparator extends OrderComparator {
 
 
 	/**
+	 * 用默认的AnnotationAwareOrderComparator对给定的列表进行排序。
+	 * 经过优化，对大小为0或1的列表跳过排序，以避免不必要的数组提取
+	 *
 	 * Sort the given List with a default AnnotationAwareOrderComparator.
 	 * <p>Optimized to skip sorting for lists with size 0 or 1,
 	 * in order to avoid unnecessary array extraction.

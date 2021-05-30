@@ -101,6 +101,7 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
+			// 排序
 			eligibleAdvisors = sortAdvisors(eligibleAdvisors);
 		}
 		return eligibleAdvisors;
@@ -152,6 +153,9 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	}
 
 	/**
+	 * 根据顺序对顾问进行排序。子类可以选择覆盖这个方法来定制排序策略。
+	 * 创建一个新的代理对象。
+	 * 使用给定的类加载器（如果对创建代理有必要的话）。null将被简单地传递下来，从而导致低级代理设施的默认值，这通常与AopProxy实现的getProxy()方法所选择的默认值不同。
 	 * Sort advisors based on ordering. Subclasses may choose to override this
 	 * method to customize the sorting strategy.
 	 * @param advisors the source List of Advisors
